@@ -1,6 +1,6 @@
 # HTTP Server – Learning Project
 
-This is a small project I started on **August 7, 2025**, to learn more about networking—specifically how HTTP works under the hood.
+This is a small project I started on **August 7, 2025**, to learn more about networking, specifically how HTTP works under the hood.
 
 ---
 
