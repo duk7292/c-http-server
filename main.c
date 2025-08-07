@@ -7,52 +7,56 @@
 
 int main()
 {
-    struct sockaddr_in my_addr; 
-
-    int sfd; 
-
-    if((sfd = socket(AF_INET,SOCK_STREAM,0)) < 0)
+    
+    //create socket
+    int listen_sock; 
+    if((listen_sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
     {
-        printf("socket return: %d , could not create socket\n",sfd);
+        printf("socket return: %d , could not create socket\n",listen_sock);
         exit(EXIT_FAILURE);
     }
     
 
-    my_addr.sin_family = AF_INET; // match the socket() call
+    //bind scocket to ip and port
+    struct sockaddr_in my_addr; 
 
-    my_addr.sin_port = htons(5100); // specify port to listen on
+    my_addr.sin_family = AF_INET; 
+    my_addr.sin_port = htons(5100); 
+    my_addr.sin_addr.s_addr = htonl(INADDR_ANY); 
 
-    my_addr.sin_addr.s_addr = htonl(INADDR_ANY); //allow the server to accept a client connection on any interface
-
-    if( bind(sfd, (struct sockaddr *) &my_addr, sizeof(my_addr))<0)
+    if( bind(listen_sock, (struct sockaddr *) &my_addr, sizeof(my_addr))<0)
     {
         printf("could not bind socket\n");
         exit(EXIT_FAILURE);
     }
 
-    if (listen(sfd, 1) < 0) {
+    //make socket listen
+
+    if (listen(listen_sock, 1) < 0) {
         perror("listen");
         exit(EXIT_FAILURE);
     }
 
+    //
     while(1) 
     {
         struct sockaddr client_addr; 
 
         int client_addr_size = sizeof(client_addr);
 
-        int new_socket;
+        int conn_sock;
         
-        if((new_socket = accept(sfd, &client_addr, &client_addr_size))<0)
+        //wait for request and create new socket 
+        if((conn_sock = accept(listen_sock, &client_addr, &client_addr_size))<0)
         {
-            printf("socket return: %d , could not create socket\n",new_socket);
+            printf("socket return: %d , could not create socket\n",conn_sock);
             exit(EXIT_FAILURE);
         }
 
-
+        //handle request
         char buffer[1024] = {0}; 
 
-        int bytes_received = recv(new_socket, buffer, sizeof(buffer) - 1, 0);
+        int bytes_received = recv(conn_sock, buffer, sizeof(buffer) - 1, 0);
 
         if (bytes_received > 0) {
 
@@ -62,15 +66,17 @@ int main()
         } else {
             perror("recv");
         }
+
+        //send response
         char send_buffer[] =
             "HTTP/1.1 200 OK\r\n"
             "Content-Type: text/plain\r\n"
             "Content-Length: 13\r\n"
             "\r\n"
             "Hello, world!";
-        send(new_socket, send_buffer, strlen(send_buffer), 0);
+        send(conn_sock, send_buffer, strlen(send_buffer), 0);
 
-        close(new_socket);
+        close(conn_sock);
     }
 
 

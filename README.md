@@ -14,8 +14,7 @@ This is a small project I started on **August 7, 2025**, to learn more about net
 ---
 
 ## 🔜 Next Steps
-- [ ] clean up code.
-- [ ] Review and remove unnecessary `#include` statements,if there are any.
+
 
 - [ ] Parse incoming data.
 - [ ] Validate whether a request is a valid HTTP request.
