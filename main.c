@@ -4,18 +4,60 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <pthread.h>
+
+#include "states.h"
+void* handle_connection(void* arg)
+{
+    int* conn_sock_p = (int*) arg;
+    
+    char buffer[1024] = {0}; 
+
+    int bytes_received = recv(*conn_sock_p, buffer, sizeof(buffer) - 1, 0);
+    
+    if (bytes_received > 0) {
+
+        printf("%s", buffer);
+    } else if (bytes_received == 0) {
+        printf("Client disconnected.\n");
+    } else {
+        perror("recv");
+    }
+
+    //send response
+    char send_buffer[] =
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "Content-Length: 13\r\n"
+        "Connection: close\r\n"
+        "\r\n"
+        "Hello, world!";
+
+    send(*conn_sock_p, send_buffer, strlen(send_buffer), 0);
+    close(*conn_sock_p);
+    free(conn_sock_p);
+
+    return NULL;
+}
+
+
+
 
 int main()
 {
-    
-    //create socket
-    int listen_sock; 
+
+
+    int listen_sock;
+
     if((listen_sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
     {
         printf("socket return: %d , could not create socket\n",listen_sock);
         exit(EXIT_FAILURE);
     }
-    
+
+    //dont wait for "TIME_WAIT state" of port.
+    int opt = 1;
+    setsockopt(listen_sock, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     //bind scocket to ip and port
     struct sockaddr_in my_addr; 
@@ -37,7 +79,7 @@ int main()
         exit(EXIT_FAILURE);
     }
 
-    //
+    //Accept requests and open thread to handle them
     while(1) 
     {
         struct sockaddr client_addr; 
@@ -52,33 +94,16 @@ int main()
             printf("socket return: %d , could not create socket\n",conn_sock);
             exit(EXIT_FAILURE);
         }
+        
+        // make thread to handle conncetions
+        int* conn_sock_ptr = malloc(sizeof(int));
+        *conn_sock_ptr = conn_sock;
 
-        //handle request
-        char buffer[1024] = {0}; 
-
-        int bytes_received = recv(conn_sock, buffer, sizeof(buffer) - 1, 0);
-
-        if (bytes_received > 0) {
-
-            printf("Received: %s", buffer);
-        } else if (bytes_received == 0) {
-            printf("Client disconnected.\n");
-        } else {
-            perror("recv");
-        }
-
-        //send response
-        char send_buffer[] =
-            "HTTP/1.1 200 OK\r\n"
-            "Content-Type: text/plain\r\n"
-            "Content-Length: 13\r\n"
-            "\r\n"
-            "Hello, world!";
-        send(conn_sock, send_buffer, strlen(send_buffer), 0);
-
-        close(conn_sock);
+        pthread_t tid;
+        pthread_create(&tid, NULL, handle_connection, conn_sock_ptr);
+        pthread_detach(tid);
     }
 
 
-    return 1;
+    return 0;
 }
