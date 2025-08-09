@@ -11,6 +11,6 @@ typedef enum
     DELETE,
     PATCH,
 
-} http_method;
+} HTTP_METHOD;
 
 #endif

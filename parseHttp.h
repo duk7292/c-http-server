@@ -1,8 +1,11 @@
+#include <stdio.h>
+#include <string.h>
+
 #include "states.h"
 
 #ifndef PARSE_HTTP_H
 #define PARSE_HTTP_H
 
-http_method get_http_method();
+HTTP_METHOD get_http_method(char buffer[]);
 
 #endif

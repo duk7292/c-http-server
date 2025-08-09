@@ -6,24 +6,31 @@
 #include <unistd.h>
 #include <pthread.h>
 
+#include "parseHttp.h"
 #include "states.h"
 void* handle_connection(void* arg)
 {
+    
     int* conn_sock_p = (int*) arg;
     
     char buffer[1024] = {0}; 
 
     int bytes_received = recv(*conn_sock_p, buffer, sizeof(buffer) - 1, 0);
-    
+    printf("------------------\n");
     if (bytes_received > 0) {
 
-        printf("%s", buffer);
+        printf("%s\n", buffer);
+        
     } else if (bytes_received == 0) {
         printf("Client disconnected.\n");
     } else {
         perror("recv");
     }
-
+    printf("------------------\n");
+    
+    HTTP_METHOD http_method = get_http_method(buffer);
+    
+    printf("%d \n", http_method);
     //send response
     char send_buffer[] =
         "HTTP/1.1 200 OK\r\n"
@@ -46,7 +53,7 @@ void* handle_connection(void* arg)
 int main()
 {
 
-
+     
     int listen_sock;
 
     if((listen_sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
