@@ -7,7 +7,7 @@
 #include <pthread.h>
 
 #include "parseHttp.h"
-#include "states.h"
+#include "hashMap.h"
 void* handle_connection(void* arg)
 {
     
@@ -28,9 +28,10 @@ void* handle_connection(void* arg)
     }
     printf("------------------\n");
     
-    HTTP_METHOD http_method = get_http_method(buffer);
+    hash_map* http_parse = parse_http(buffer);
     
-    printf("%d \n", http_method);
+    printf("%s\n",hm_get(http_parse,"Content-Length"));
+   
     //send response
     char send_buffer[] =
         "HTTP/1.1 200 OK\r\n"
@@ -43,7 +44,7 @@ void* handle_connection(void* arg)
     send(*conn_sock_p, send_buffer, strlen(send_buffer), 0);
     close(*conn_sock_p);
     free(conn_sock_p);
-
+    hm_free(http_parse);
     return NULL;
 }
 
@@ -53,7 +54,6 @@ void* handle_connection(void* arg)
 int main()
 {
 
-     
     int listen_sock;
 
     if((listen_sock = socket(AF_INET,SOCK_STREAM,0)) < 0)
