@@ -7,12 +7,12 @@
 #ifndef PARSE_HTTP_H
 #define PARSE_HTTP_H
 
+hash_map *parse_http(char buffer[]);
 
+int parse_request_line(hash_map *hm, char firstLine[]);
 
-hash_map* parse_http(char buffer[]);
+int parse_header(hash_map *hm, char **rawHeader, int headerSize);
 
-int parse_request_line(hash_map* hm, char firstLine[]);
-
-int parse_header(hash_map* hm, char** rawHeader, int headerSize);
+// int construct_http_response(char **response, );
 
 #endif
