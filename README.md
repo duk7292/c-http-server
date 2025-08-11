@@ -18,7 +18,7 @@ This is a small project I started on **August 6, 2025**, to learn more about net
 
 
 ### 09.08.2025 - 10.08.2025
-- ✅ added a hashmap for better storage of http info
+- ✅ build a simple a hashmap for better storage of http info
 - ✅ made the parsing of the http
 - ✅ made a simple bash for sending test curl requests
 
