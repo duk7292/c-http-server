@@ -1,27 +1,24 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
-#include "helper.c"
+int main(void) {
+    FILE *fp = fopen("Files/index.html", "rb");
+    if (!fp) return 1;
 
-int main()
-{
-    while (1)
-    {
-        char *a = NULL;
-        char *b = NULL;
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    rewind(fp);
 
-        a = strdup("heysssssssss A");
-        b = strdup("hessssssssy B");
+    char *buffer = malloc(size + 1);
+    if (!buffer) return 1;
 
-        a = str_append(a, b);
+    fread(buffer, 1, size, fp);
+    buffer[size] = '\0';
 
-        printf("%s\n", a);
+    printf("%s\n", buffer);
 
-        free(a);
-        free(b);
-        print_memory_usage();
-    }
-
+    free(buffer);
+    fclose(fp);
     return 0;
 }
+

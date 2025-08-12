@@ -9,25 +9,7 @@
 
 #include "parseHttp.h"
 #include "hashMap.h"
-
-int set_response_buffer(char **response, hash_map *httpParse)
-{
-    bool valid = false;
-    char *httpMethod = hm_get(httpParse, "http_method");
-    if (httpMethod)
-    {
-        if (strcmp(httpMethod, "GET") == 0)
-        {
-        }
-    }
-    *response = strdup("HTTP/1.1 200 OK\r\n"
-                       "Content-Type: text/html\r\n"
-                       "Content-Length: 13\r\n"
-                       "Connection: close\r\n"
-                       "\r\n"
-                       "Hello, world!");
-    return 0;
-}
+#include "generateHttp.h"
 
 void *handle_connection(void *arg)
 {
@@ -56,8 +38,8 @@ void *handle_connection(void *arg)
     hash_map *http_parse = parse_http(buffer);
 
     // send response
-    char *response_buffer = NULL;
-    set_response_buffer(&response_buffer, http_parse);
+
+    char *response_buffer = get_response_buffer(http_parse);
     send(*conn_sock_p, response_buffer, strlen(response_buffer), 0);
 
     close(*conn_sock_p);

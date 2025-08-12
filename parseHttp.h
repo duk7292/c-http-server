@@ -13,6 +13,4 @@ int parse_request_line(hash_map *hm, char firstLine[]);
 
 int parse_header(hash_map *hm, char **rawHeader, int headerSize);
 
-// int construct_http_response(char **response, );
-
 #endif
