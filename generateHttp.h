@@ -9,6 +9,8 @@
 #ifndef GENERATE_HTTP_H
 #define GENERATE_HTTP_H
 
-char *get_response_buffer( hash_map *httpParse);
+char* get_response_buffer( hash_map *httpParse);
+
+char* compose_response(char* content_type,long content_length,char* body);
 
 #endif

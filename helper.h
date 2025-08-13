@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -9,7 +8,7 @@
 
 void print_memory_usage();
 
-char *str_append(char *strA, char *strB);
+char *str_append(char *strA,const char *strB);
 
 
 

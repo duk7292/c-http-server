@@ -10,6 +10,7 @@
 #include "parseHttp.h"
 #include "hashMap.h"
 #include "generateHttp.h"
+#include "helper.h"
 
 void *handle_connection(void *arg)
 {
@@ -48,6 +49,8 @@ void *handle_connection(void *arg)
     free(response_buffer);
     free(conn_sock_p);
     hm_free(http_parse);
+    
+    print_memory_usage();
 
     return NULL;
 }
