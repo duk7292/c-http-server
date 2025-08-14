@@ -96,7 +96,7 @@ int main()
     {
         struct sockaddr client_addr;
 
-        int client_addr_size = sizeof(client_addr);
+        socklen_t client_addr_size = sizeof(client_addr);
 
         int conn_sock;
 

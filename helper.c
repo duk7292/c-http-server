@@ -28,10 +28,12 @@ void print_memory_usage()
     printf("Resident Memory (RSS): %ld KB\n", resident_kb);
 }
 
-char *str_append(char *strA,const char *strB)
+char *str_append(char *strA, const char *strB)
 {
-    printf("A : %s , B : %s, A_Size : %ld, B_Size : %ld \n",strA,strB,strlen(strA),strlen(strB));
-    strA = realloc(strA, (strlen(strA) + strlen(strB)) * sizeof(char));
+
+    
+    strA = realloc(strA, (strlen(strA) + strlen(strB) +1 ) * sizeof(char));
+
     memcpy(strA + strlen(strA), strB, strlen(strB) + 1);
 
     return strA;

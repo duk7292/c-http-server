@@ -59,6 +59,7 @@ int parse_header(hash_map *hm, char **rawHeader, int headerSize)
 
         hm_put(hm, start, end);
     }
+    return 0;
 }
 
 int parse_request_line(hash_map *hm, char firstLine[])

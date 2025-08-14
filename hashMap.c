@@ -40,6 +40,7 @@ int hm_free(hash_map* hm)
     free(hm->values);
     free(hm->identifiers);
     free(hm);
+    return 0;
 }
 
 
