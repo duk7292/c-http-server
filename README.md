@@ -22,7 +22,7 @@ The goal wasn’t to make something production-ready, but to learn how things wo
 - Only handles **GET** requests.  
 - Anything inside the `public/` folder can be served.  
   - Files outside of it are blocked.  
-- handels a few different file types (check `contentTypeConversion.c`).  
+- handels a few different file types (check `contentTypeConversion.h`).  
 
 ---
 
