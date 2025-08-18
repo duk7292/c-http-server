@@ -1,11 +1,13 @@
+#ifndef PARSE_HTTP_H
+#define PARSE_HTTP_H
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
 #include "hashMap.h"
 
-#ifndef PARSE_HTTP_H
-#define PARSE_HTTP_H
+
 
 hash_map *parse_http(char buffer[]);
 

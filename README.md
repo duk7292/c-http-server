@@ -1,31 +1,45 @@
-# HTTP Server – Learning Project
+# Simple HTTP Server in C
 
-This is a small project I started on **August 6, 2025**, to learn more about networking, specifically how HTTP works under the hood.
+This is a tiny HTTP server I hacked together in **raw C**.  
+The goal wasn’t to make something production-ready, but to learn how things work under the hood:
+- How HTTP servers actually function
+- How to write real programs in C (since I hadn’t really used C like this before)
+
+---
+
+## How It Works
+
+- The server opens a **listening socket** and waits for incoming connections.  
+- When a client connects, it spins up a **detached thread** to handle that request, while the main thread keeps listening for more.  
+- In the worker thread:
+  - The HTTP request is parsed and stored in a **hashmap**.
+  - That hashmap gets passed to a simple response builder, which creates an HTTP response with headers and serves a file if it exists.
 
 ---
 
-## 🛠️ Progress Log
+## Features
 
-### 06.08.2025
-- ✅ Got basic sockets working.
-- ✅ Server responds to `curl` requests with a simple **"Hello, world"** HTTP response.
-- ⚠️ Does not yet parse incoming request data (no method/path/header parsing).
-
-
-### 07.08.2025
-- ✅ Got simple multithreading to handle multiple requests better.
-- ✅ started working on the parse code but only got the start so far.
-
-
-### 09.08.2025 - 10.08.2025
-- ✅ build a simple a hashmap for better storage of http info
-- ✅ made the parsing of the http
-- ✅ made a simple bash for sending test curl requests
-
+- Only handles **GET** requests.  
+- Anything inside the `public/` folder can be served.  
+  - Files outside of it are blocked.  
+- handels a few different file types (check `contentTypeConversion.c`).  
 
 ---
-## 🔜 Next Steps
 
+## Things That Could Be Better
 
-- [ ] getting some data to send back 
-- [ ] sending back files
+This is just a learning project, so I kept it super basic. Some improvements could be:
+- Supporting more HTTP methods (POST, PUT, DELETE, …).
+- Redirecting `/` to `index.html` automatically.
+- Making it configurable.
+- Adding proper error handling and logging.
+- Smarter request parsing.
+
+---
+
+## Notes
+
+This is **not meant for production**.  
+It’s just a personal experiment to learn sockets, and HTTP basics in C.  
+
+For now, I’m leaving it as it is, it does what I wanted, and I learned a lot in the process.

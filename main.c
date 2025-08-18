@@ -11,6 +11,7 @@
 #include "hashMap.h"
 #include "generateHttp.h"
 #include "helper.h"
+#include "types.h"
 
 void *handle_connection(void *arg)
 {
@@ -40,17 +41,18 @@ void *handle_connection(void *arg)
 
     // send response
 
-    char *response_buffer = get_response_buffer(http_parse);
-    send(*conn_sock_p, response_buffer, strlen(response_buffer), 0);
+    response_data responseData = get_response_buffer(http_parse);
+    send(*conn_sock_p, responseData.header, strlen(responseData.header), 0);
 
+    send(*conn_sock_p, responseData.body, responseData.body_size, 0);
     close(*conn_sock_p);
 
     // free memory
-    free(response_buffer);
+    free(responseData.header);
+    free(responseData.body);
+
     free(conn_sock_p);
     hm_free(http_parse);
-    
-    print_memory_usage();
 
     return NULL;
 }
