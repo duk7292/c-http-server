@@ -1,10 +1,10 @@
+#ifndef HASH_MAP_H
+#define HASH_MAP_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-
-#ifndef HASH_MAP_H
-#define HASH_MAP_H
 
 //simple Hashmap for strings
 
