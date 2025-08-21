@@ -7,11 +7,11 @@
 #include <pthread.h>
 #include <stdbool.h>
 
-#include "parseHttp.h"
-#include "hashMap.h"
-#include "generateHttp.h"
-#include "helper.h"
-#include "types.h"
+#include "../headers/parseHttp.h"
+#include "../headers/hashMap.h"
+#include "../headers/generateHttp.h"
+#include "../headers/helper.h"
+#include "../headers/types.h"
 
 void *handle_connection(void *arg)
 {
