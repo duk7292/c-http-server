@@ -1,4 +1,4 @@
-#include "hashMap.h"
+#include "../headers/hashMap.h"
 
 hash_map* hm_create(int size)
 {

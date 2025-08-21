@@ -1,6 +1,6 @@
 # Simple HTTP Server in C
 
-This is a tiny HTTP server I hacked together in **raw C**.  
+This is a tiny HTTP server I build in C.  
 The goal wasn’t to make something production-ready, but to learn how things work under the hood:
 - How HTTP servers actually function
 - How to write real programs in C (since I hadn’t really used C like this before)

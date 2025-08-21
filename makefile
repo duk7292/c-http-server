@@ -1,10 +1,12 @@
 TARGET := out/main
-SRC    := $(wildcard *.c)
+SRC    := $(wildcard src/*.c)
 
 CFLAGS = -Wall -Wextra -g -O0 #-fsanitize=address
+INCLUDES = -Iinclude
+
 all:
 	mkdir -p out
-	gcc $(CFLAGS) $(SRC) -o $(TARGET)
+	gcc $(CFLAGS) $(INCLUDES) $(SRC) -o $(TARGET)
 
 run: all
 	./$(TARGET)
